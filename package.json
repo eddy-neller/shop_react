@@ -1,14 +1,18 @@
 {
-  "name": "endevelop_shop",
+  "name": "en_shop_react",
   "version": "0.1.0",
+  "description": "Frontend e-commerce E.N Shop construit avec Next.js 15, TypeScript et Tailwind CSS.",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "next dev -p 4000 -H 0.0.0.0",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "prepare": "husky"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -52,6 +56,7 @@
     "autoprefixer": "^10.4.20",
     "eslint": "^8",
     "eslint-config-next": "^15.1.0",
+    "husky": "^9.1.7",
     "postcss": "^8.4.47",
     "prettier": "^3.6.2",
     "tailwindcss": "^3.4.17",

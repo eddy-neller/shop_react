@@ -1,177 +1,176 @@
-# Shop - E-commerce Next.js
+## E.N Shop React – Frontend e‑commerce avec Next.js 15 & TypeScript
 
-Projet e-commerce moderne développé avec Next.js 16, TypeScript et Tailwind CSS. Ce projet a été conçu pour démontrer les compétences en développement web moderne, avec une architecture propre, du code maintenable et des bonnes pratiques.
+E.N Shop React est le **frontend e‑commerce** du projet E.N Shop, construit avec **Next.js 15**, **TypeScript** et **Tailwind CSS**.  
+Comme pour `en_shop_api`, ce dépôt est pensé comme un **projet portfolio** qui montre une approche moderne du front : architecture claire, typage strict, UX soignée et intégration propre avec une API backend.
 
-## 🚀 Technologies utilisées
+---
 
-- **Next.js 15** - Framework React avec App Router
-- **TypeScript 5** - Typage statique pour une meilleure maintenabilité
-- **Tailwind CSS 3** - Framework CSS utility-first
-- **NextAuth.js** - Authentification et gestion de sessions
-- **React Hook Form** - Gestion performante des formulaires
-- **Zod** - Validation de schémas TypeScript-first
-- **TanStack Query** - Gestion des requêtes et du cache
-- **ESLint** - Linting du code
-- **Prettier** - Formatage automatique du code
+## 🎯 Objectifs du projet
 
-## 📋 Prérequis
+- **Montrer la maîtrise de Next.js 15 (App Router) et TypeScript 5** pour un front moderne, SSR/SPA hybride.
+- **Illustrer une architecture front claire** : séparation des features, composants UI, couches d’accès API, providers, schémas, types.
+- **Mettre en avant des bonnes pratiques de qualité** : ESLint, Prettier, TypeScript strict, gestion d’état/remote data propre.
+- **S’intégrer dans l’écosystème complet** : backend Symfony/API Platform (`en_shop_api`) + éventuelle interface d’admin.
 
-- Node.js 18+ et npm
-- Git
+En résumé : ce repo illustre comment je conçois un **front e‑commerce maintenable** au-dessus d’une vraie API métier.
 
-## 🛠️ Installation
+---
 
-1. Cloner le projet (si nécessaire) :
+## 🧩 Rôle du frontend dans l’écosystème
+
+E.N Shop React fournit :
+
+- L’**interface utilisateur** du shop (parcours visiteur/utilisateur).
+- La **consommation de l’API** `en_shop_api` (auth, profil, future gestion de catalogue, etc.).
+- La **gestion de l’authentification** côté front (NextAuth + JWT) avec synchronisation des tokens et du profil.
+- Une **base UX/UI** réutilisable (design system léger, composants accessibles, thèmes).
+
+Le frontend est pensé pour rester **faiblement couplé** au backend :  
+les URLs d’API, de statiques et de site sont injectées via les variables d’environnement, pas hardcodées dans le code.
+
+---
+
+## 🛠️ Stack technique & outils
+
+- **Next.js 15** (App Router)
+- **React 18**
+- **TypeScript 5** (configuration stricte)
+- **Tailwind CSS 3** + `tailwind-merge` + `tailwindcss-animate`
+- **Radix UI** / `cmdk` / `lucide-react` pour les composants de base
+- **NextAuth** avec provider Credentials (intégration JWT backend)
+- **TanStack Query** pour la gestion des requêtes et du cache
+- **React Hook Form** + **Zod** + `@hookform/resolvers` pour les formulaires typés
+- **Axios** pour le client HTTP côté client
+- Outils qualité :
+  - **ESLint** (`next/core-web-vitals`, `next/typescript`)
+  - **Prettier**
+  - **Husky** (hook `pre-commit` avec `npm run lint`)
+
+Ces choix visent un front **proche de la production** : DX agréable, typage fort, base solide pour grandir.
+
+---
+
+## 📁 Architecture du projet
+
+Le projet suit une organisation orientée “features” et couches partagées :
+
+- `src/app/` : **App Router** Next.js (pages, layouts, routing).
+- `src/features/` : **features métier** (ex : `Auth`, `User`, etc.) avec :
+  - `components/` : composants spécifiques à la feature.
+  - `services/` : appels API liés à la feature.
+  - `hooks/` : hooks métier (ex : `useLogout`).
+  - `schemas/` : schémas Zod pour cette feature.
+  - `types/` : types dédiés à la feature.
+- `src/components/` : **composants UI génériques** (design system).
+- `src/lib/` :
+  - `api/` : clients HTTP (`httpClient`, `serverApiClient`).
+  - `metadata.ts` : métadonnées globales (SEO, OpenGraph…).
+  - `utils/` : helpers partagés (erreurs, formats, etc.).
+- `src/providers/` : **providers globaux** (QueryClient, thèmes, NextAuth, etc.).
+- `src/schemas/` / `src/types/` : schémas et types transverses.
+
+**Décision technique (en clair)** :  
+je sépare les **features** (Auth, User, etc.) de l’**infra front** (`lib`, `providers`, `components`) pour garder un code lisible, testable et facilement extensible.
+
+---
+
+## 🚀 Démarrage rapide
+
+### Prérequis
+
+- **Node.js 18+**
+- **npm**
+- **Git**
+
+### Installation
+
+Depuis la racine du projet :
 
 ```bash
 git clone <repository-url>
 cd endevelop_shop
-```
-
-2. Installer les dépendances :
-
-```bash
 npm install
 ```
 
-3. Configurer les variables d'environnement :
+### Configuration des variables d’environnement
 
-Créez un fichier `.env.local` à la racine du projet avec les variables suivantes :
+Crée un fichier `.env.local` à la racine du projet (non versionné, voir `.gitignore`) avec par exemple :
 
 ```env
-# URL de l'API backend
+# URL de l'API backend (en général en_shop_api)
 NEXT_PUBLIC_API_URL=http://localhost:8000/api
 
 # URL de base pour les assets statiques (images, fichiers uploadés)
-# Si non définie, sera dérivée de NEXT_PUBLIC_API_URL en retirant /api
+# Si non définie, elle peut être dérivée de NEXT_PUBLIC_API_URL côté code
 NEXT_PUBLIC_STATIC_URL=http://localhost:8000
 
-# NextAuth.js
+# URL publique du front pour NextAuth (adaptée à ton port)
 NEXTAUTH_URL=http://localhost:3001
+
+# Secret NextAuth (ne jamais committer une vraie valeur)
 NEXTAUTH_SECRET=votre-secret-tres-securise-ici
 ```
 
-**Note** : Pour générer un `NEXTAUTH_SECRET` sécurisé, vous pouvez utiliser :
+**Pourquoi cette approche ?**  
+Toutes les URLs et secrets sensibles restent dans l’**environnement** et ne sont jamais committés dans Git.
+
+Pour générer un `NEXTAUTH_SECRET` sécurisé :
 
 ```bash
 openssl rand -base64 32
 ```
 
-4. Démarrer le serveur de développement :
+### Lancement du serveur de développement
 
 ```bash
 npm run dev
 ```
 
-L'application sera accessible sur [http://localhost:3000](http://localhost:3000)
-
-## 📁 Structure du projet
-
-```
-endevelop_shop/
-├── app/                    # App Router (Next.js 14+)
-│   ├── layout.tsx         # Layout principal avec Header et Footer
-│   ├── page.tsx           # Page d'accueil
-│   ├── contact/
-│   │   └── page.tsx       # Page de contact avec formulaire
-│   └── globals.css        # Styles globaux et variables de thème
-├── components/            # Composants réutilisables
-│   ├── ui/               # Composants UI de base
-│   │   ├── Button.tsx
-│   │   ├── Input.tsx
-│   │   ├── Textarea.tsx
-│   │   └── Card.tsx
-│   └── layout/           # Composants de layout
-│       ├── Header.tsx
-│       └── Footer.tsx
-├── lib/                  # Utilitaires et helpers
-│   └── validation.ts     # Schémas de validation Zod
-├── types/                # Types TypeScript
-│   └── index.ts
-└── public/               # Assets statiques
-```
-
-## 🎨 Fonctionnalités
-
-### Page d'accueil
-
-- Hero section avec message d'accueil
-- Section produits en vedette (données mockées)
-- Section "Pourquoi nous choisir" avec valeurs
-- Design moderne et responsive
-
-### Page de contact
-
-- Formulaire de contact avec validation complète
-- Validation côté client avec Zod et React Hook Form
-- Gestion des erreurs et messages de succès
-- Informations de contact supplémentaires
-
-### Composants réutilisables
-
-- **Button** : Bouton avec variantes (primary, secondary, outline)
-- **Input** : Champ de formulaire avec label et gestion d'erreurs
-- **Textarea** : Zone de texte avec validation
-- **Card** : Carte pour afficher les produits
-
-## 📝 Scripts disponibles
-
-- `npm run dev` - Démarrer le serveur de développement
-- `npm run build` - Créer un build de production
-- `npm run start` - Démarrer le serveur de production
-- `npm run lint` - Vérifier le code avec ESLint
-
-## 🎯 Bonnes pratiques appliquées
-
-- **TypeScript strict** : Configuration TypeScript stricte, pas d'utilisation de `any`
-- **DRY (Don't Repeat Yourself)** : Code réutilisable et composants modulaires
-- **KISS (Keep It Simple, Stupid)** : Solutions simples et efficaces
-- **Composants réutilisables** : Architecture modulaire avec composants UI
-- **Validation robuste** : Validation de formulaires avec Zod
-- **Accessibilité** : Labels, rôles ARIA, navigation au clavier
-- **SEO** : Metadata optimisée pour les moteurs de recherche
-- **Responsive Design** : Design mobile-first avec Tailwind CSS
-
-## 🔧 Configuration
-
-### TypeScript
-
-Le projet utilise une configuration TypeScript stricte pour garantir la qualité du code et éviter les erreurs à l'exécution.
-
-### ESLint
-
-Configuration ESLint avec les règles Next.js pour maintenir un code cohérent.
-
-### Prettier
-
-Configuration Prettier pour un formatage automatique et cohérent du code.
-
-## 📦 Dépendances principales
-
-- `next` - Framework React
-- `react` & `react-dom` - Bibliothèque React
-- `typescript` - Typage statique
-- `tailwindcss` - Framework CSS
-- `react-hook-form` - Gestion de formulaires
-- `zod` - Validation de schémas
-- `@hookform/resolvers` - Résolveurs pour React Hook Form
-
-## 🚢 Déploiement
-
-Le projet peut être déployé sur différentes plateformes :
-
-- **Vercel** (recommandé pour Next.js) : [Documentation](https://vercel.com/docs)
-- **Netlify** : [Documentation](https://docs.netlify.com/)
-- **Autres plateformes** : Suivre la documentation Next.js pour le déploiement
-
-## 📄 Licence
-
-Ce projet est un exemple de portfolio et peut être utilisé comme référence pour vos propres projets.
-
-## 👤 Auteur
-
-Développé dans le cadre d'un portfolio professionnel pour démontrer les compétences en développement web moderne.
+Par défaut, l’application est accessible sur `http://localhost:4000` (voir `package.json` si tu ajustes le port).
 
 ---
 
-**Note** : Ce projet est en constante évolution. N'hésitez pas à proposer des améliorations ou à signaler des problèmes.
+## 📝 Scripts disponibles
+
+- `npm run dev` : démarre le serveur de développement.
+- `npm run build` : build de production Next.js.
+- `npm run start` : démarre le serveur en mode production.
+- `npm run lint` : exécute ESLint.
+- `npm run format` : formate le code avec Prettier.
+- `npm run format:check` : vérifie le formatage.
+
+---
+
+## ✅ Qualité de code & bonnes pratiques
+
+- **TypeScript strict** (pas d’utilisation de `any` non justifiée).
+- **ESLint** avec les règles Next.js + TypeScript.
+- **Prettier** pour un formatage cohérent.
+- **Husky pre-commit** :
+  - empêche les commits directs sur `main/master`,
+  - lance `npm run lint` avant chaque commit.
+- **Design orienté DRY & KISS** : composants réutilisables, logique partagée dans `lib` et `features`.
+
+**Objectif** : un front **prêt pour la production**, sans dette technique évidente, et facile à faire évoluer.
+
+---
+
+## 📄 Licence / type de projet
+
+Ce dépôt est utilisé comme **projet de portfolio** pour illustrer un frontend e‑commerce moderne.  
+Il peut être librement consulté et utilisé comme **référence technique** (structure, patterns, organisation du code).  
+Si une licence formelle (ex. MIT, alignée sur `en_shop_api`) est ajoutée, elle sera indiquée dans un fichier `LICENSE` dédié.
+
+---
+
+## 👤 À propos du développeur
+
+Ce projet fait partie d’un **portfolio full‑stack** autour d’E.N Shop :  
+il complète `en_shop_api` (backend Symfony/API Platform) et prépare le terrain pour une future interface d’admin.  
+L’objectif est de montrer ma manière de :
+
+- concevoir une **expérience utilisateur** moderne au-dessus d’une vraie API,
+- structurer un **front Next.js** maintenable,
+- intégrer de façon propre les préoccupations **auth, état, qualité et DX**.
+
+N’hésite pas à parcourir les autres dépôts associés pour avoir une vision complète de l’écosystème.
