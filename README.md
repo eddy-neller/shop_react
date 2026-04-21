@@ -1,4 +1,4 @@
-## E.N Shop React – Frontend e‑commerce avec Next.js 15 & TypeScript
+## E.N Shop Next.js – Frontend e‑commerce avec Next.js 15 & TypeScript
 
 E.N Shop React est le **frontend e‑commerce** du projet E.N Shop, construit avec **Next.js 15**, **TypeScript** et **Tailwind CSS**.  
 Comme pour `en_shop_api`, ce dépôt est pensé comme un **projet portfolio** qui montre une approche moderne du front : architecture claire, typage strict, UX soignée et intégration propre avec une API backend.
@@ -18,7 +18,7 @@ En résumé : ce repo illustre comment je conçois un **front e‑commerce maint
 
 ## 🧩 Rôle du frontend dans l’écosystème
 
-E.N Shop React fournit :
+E.N Shop Next.js fournit :
 
 - L’**interface utilisateur** du shop (parcours visiteur/utilisateur).
 - La **consommation de l’API** `en_shop_api` (auth, profil, future gestion de catalogue, etc.).
@@ -32,19 +32,17 @@ les URLs d’API, de statiques et de site sont injectées via les variables d’
 
 ## 🛠️ Stack technique & outils
 
-- **Next.js 15** (App Router)
-- **React 18**
-- **TypeScript 5** (configuration stricte)
-- **Tailwind CSS 3** + `tailwind-merge` + `tailwindcss-animate`
-- **Radix UI** / `cmdk` / `lucide-react` pour les composants de base
+- **Next.js 15** + **React 18** pour une application performante et une DX rapide.
+- **TypeScript 5** avec configuration stricte.
+- **Tailwind CSS 3**, **Sass**, **Radix UI**, **shadcn-style components** et **lucide-react** pour la couche UI.
 - **NextAuth** avec provider Credentials (intégration JWT backend)
-- **TanStack Query** pour la gestion des requêtes et du cache
+- **TanStack Query 5** pour les requêtes, le cache serveur et les états de chargement.
 - **React Hook Form** + **Zod** + `@hookform/resolvers` pour les formulaires typés
-- **Axios** pour le client HTTP côté client
+- **Axios** avec client HTTP centralisé, intercepteurs, token JWT et gestion des erreurs 401.
 - Outils qualité :
-  - **ESLint** (`next/core-web-vitals`, `next/typescript`)
-  - **Prettier**
-  - **Husky** (hook `pre-commit` avec `npm run lint`)
+  - **ESLint 9** avec règles React, Hooks, Refresh et TypeScript.
+  - **Prettier** pour un formatage cohérent.
+  - **Husky** pour préparer les hooks Git.
 
 Ces choix visent un front **proche de la production** : DX agréable, typage fort, base solide pour grandir.
 
@@ -88,7 +86,7 @@ Depuis la racine du projet :
 
 ```bash
 git clone <repository-url>
-cd endevelop_shop
+cd <dir>
 npm install
 ```
 
@@ -143,12 +141,9 @@ Par défaut, l’application est accessible sur `http://localhost:4000` (voir `p
 
 ## ✅ Qualité de code & bonnes pratiques
 
-- **TypeScript strict** (pas d’utilisation de `any` non justifiée).
+- **TypeScript strict** pour limiter les erreurs de contrat entre composants, API et formulaires.
 - **ESLint** avec les règles Next.js + TypeScript.
 - **Prettier** pour un formatage cohérent.
-- **Husky pre-commit** :
-  - empêche les commits directs sur `main/master`,
-  - lance `npm run lint` avant chaque commit.
 - **Design orienté DRY & KISS** : composants réutilisables, logique partagée dans `lib` et `features`.
 
 **Objectif** : un front **prêt pour la production**, sans dette technique évidente, et facile à faire évoluer.
